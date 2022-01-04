@@ -1,0 +1,35 @@
+pipeline {
+    agent {
+      label 'Jenkins-Deploy'
+    }
+
+    stages {
+        stage('Checkout Git') {
+            steps {
+                echo 'Checking Out'
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitHubaccessToken', url: 'https://github.com/ebuque/wit-challenge']]])
+            }
+        }
+        
+        
+        stage('Deploy ECR Image') {
+            steps {
+                echo 'Deploying Image'
+                script{
+                sh 'kubectl create -f wit-devops-deployment.yaml'
+                }
+
+            }
+        }
+        
+     stage('Show Load Balancer Address') {
+        steps {
+            script{
+            sh 'kubectl get services wit-challenge-lb'
+            }
+
+        }
+        }
+    }
+    
+}
