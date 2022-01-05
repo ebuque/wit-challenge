@@ -1,0 +1,26 @@
+- hosts: localhost
+  connection: local 
+  tasks:
+  - name: Create folder to old deployments
+    ansible.builtin.file:
+      path: deployments-old
+      state: directory
+      mode: '0777'
+
+  - name: Copy all old deployments 
+    copy: remote_src=True src=wit-devops-deployment.yaml dest=deployments-old/wit-devops-deployment.yaml
+
+  - name: Remove old deployments
+    file: path=wit-devops-deployment.yaml state=absent
+
+  - name: Delete Old Deployments
+    command: kubectl delete -f deployments-old/wit-devops-deployment.yaml
+
+  - name: Deploy new Microservice
+    command: kubectl create -f wit-devops-deployment.yaml
+
+  - name: Rename Deployment file
+    command: mv wit-devops-deployment.yaml wit-devops-deployment-deployed.yaml
+
+  - name: Get Services details
+    command: kubectl get services wit-challenge-lb
