@@ -8,7 +8,7 @@
       mode: '0777'
 
   - name: Delete Old Deployments
-    command: kubectl delete -f deployments-old/wit-devops-deployment.yaml
+    command: kubectl delete -f deployments-old/wit-devops-deployment.yaml --ignore-not-found=true
 
   - name: Deploy new Microservice
     command: kubectl create -f wit-devops-deployment.yaml
