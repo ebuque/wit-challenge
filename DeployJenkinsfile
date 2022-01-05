@@ -11,16 +11,16 @@ pipeline {
             }
         }
         
-        
-        stage('Deploy ECR Image') {
+        stage('Ansible Playbook') {
             steps {
-                echo 'Deploying Image'
+                echo 'Executing Ansible'
                 script{
-                sh 'kubectl create -f wit-devops-deployment.yaml'
+                  ansiblePlaybook installation: 'ansible', playbook: 'deploy-playbook.yaml'
                 }
 
             }
         }
+        
         
      stage('Show Load Balancer Address') {
         steps {
