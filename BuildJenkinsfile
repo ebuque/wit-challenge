@@ -20,7 +20,7 @@ pipeline {
             steps {
                 echo 'Deleting Old Docker image'
                 script{
-                sh 'docker system prune -a'
+                sh 'docker rmi $(docker images -q)'
                 }
 
             }
