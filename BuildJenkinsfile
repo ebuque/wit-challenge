@@ -15,6 +15,17 @@ pipeline {
             }
         }
         
+                
+        stage('Docker delete old Build') {
+            steps {
+                echo 'Deleting Old Docker image'
+                script{
+                dockerImage = docker.delete registry
+                }
+
+            }
+        }
+        
         
         stage('Docker Build') {
             steps {
