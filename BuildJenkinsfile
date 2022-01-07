@@ -20,7 +20,7 @@ pipeline {
             steps {
                 echo 'Deleting Old Docker image'
                 script{
-                dockerImage = docker.delete registry
+                sh 'docker system prune -a'
                 }
 
             }
